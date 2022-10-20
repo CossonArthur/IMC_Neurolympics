@@ -36,7 +36,7 @@
     const div3 = document.getElementById('3');
     const scores = document.getElementById('scores');
     const counter = document.getElementById('counter');
-    const timetobegin = 700;
+    const timetobegin = 500;
 
     var gstart = false;
     var countwin = 0;
@@ -106,7 +106,7 @@
                 }
                 gstart = false;
                 hideBlock();
-                setTimeout(initGame(), timetobegin);
+                setTimeout(() => { initGame(); }, timetobegin);
             } else if (e.key == 'ArrowRight' && Date.now() - time < 2000) {
                 if (div3.style.backgroundColor == div2.style.backgroundColor) {
                     countwin++;
@@ -116,13 +116,13 @@
                 }
                 gstart = false;
                 hideBlock();
-                setTimeout(initGame(), timetobegin);
+                setTimeout(() => { initGame(); }, timetobegin);
             } else if (e.key == 'Escape') {
                 gstart = false;
                 start.style.display = 'block';
             } else {
                 countlose++;
-                setTimeout(initGame(), timetobegin);
+                setTimeout(() => { initGame(); }, timetobegin);
             }
         }
     })
