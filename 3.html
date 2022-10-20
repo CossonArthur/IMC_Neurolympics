@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="width: 75%; margin:auto; display: flex; justify-content: center; align-items: center;">
+        <button id="start">Start</button>
+        <div id="scores" style="display: none;">
+            Win counter : <span style="margin:50px" id="counter">0</span>
+            Lose counter : <span style="margin:50px" id="counter2">0</span>
+            Average time : <span style="margin:50px" id="counter3">0</span>ms
+        </div>
+    </div>
+
+    <div style="width: 75%; height: 100vh; margin:auto; display: flex; justify-content: center; align-items: center;">
+        <div id="1" style="width: 75px; height: 75px;"></div>
+        <div id="2" style="position:relative; top:-50px; width: 75px; height: 75px; margin: 0 150px;"></div>
+        <div id="3" style="width: 75px; height: 75px;"></div>
+    </div>
+
+
+</body>
+
+<script>
+    const start = document.getElementById('start');
+    const div1 = document.getElementById('1');
+    const div2 = document.getElementById('2');
+    const div3 = document.getElementById('3');
+    const scores = document.getElementById('scores');
+    const timetobegin = 700;
+
+    var gstart = false;
+    var countwin = 0;
+    var countlose = 0;
+    var wintime = [];
+    var time = 0;
+
+
+    const color = ['blue', 'red'];
+
+    start.addEventListener('click', () => {
+        div1.style.backgroundColor = 'green';
+        div2.style.backgroundColor = 'green';
+        div3.style.backgroundColor = 'green';
+        start.style.display = 'none';
+        scores.style.display = "block";
+        setTimeout(initGame(), 3000);
+    })
+
+    function initGame() {
+
+        updateCounter();
+        gstart = true;
+
+        function choiceColor() {
+            div2.style.backgroundColor = color[Math.floor(Math.random() * color.length)];
+            time = Date.now();
+        }
+
+        if (Math.random() < 0.5) {
+            div1.style.backgroundColor = color[0];
+            div3.style.backgroundColor = color[1];
+        } else {
+            div1.style.backgroundColor = color[1];
+            div3.style.backgroundColor = color[0];
+        }
+
+        setTimeout(choiceColor, 200);
+    }
+
+    function updateCounter() {
+        document.getElementById('counter').innerHTML = countwin;
+        document.getElementById('counter2').innerHTML = countlose;
+        document.getElementById('counter3').innerHTML = Math.floor(wintime.reduce((a, b) => a + b, 0) / wintime.length);
+    }
+    function hideBlock() {
+        div1.style.backgroundColor = '';
+        div2.style.backgroundColor = '';
+        div3.style.backgroundColor = '';
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (gstart) {
+            if (e.key == 'ArrowLeft' && Date.now() - time < 2000) {
+                if (div1.style.backgroundColor == div2.style.backgroundColor) {
+                    countwin++;
+                    wintime.push(Date.now() - time);
+                } else {
+                    countlose++;
+                }
+                gstart = false;
+                hideBlock();
+                setTimeout(initGame(), timetobegin);
+            } else if (e.key == 'ArrowRight' && Date.now() - time < 2000) {
+                if (div3.style.backgroundColor == div2.style.backgroundColor) {
+                    countwin++;
+                    wintime.push(Date.now() - time);
+                } else {
+                    countlose++;
+                }
+                gstart = false;
+                hideBlock();
+                setTimeout(initGame(), timetobegin);
+            } else if (e.key == 'Escape') {
+                gstart = false;
+                start.style.display = 'block';
+            } else {
+                countlose++;
+                setTimeout(initGame(), timetobegin);
+            }
+        }
+    })
+
+
+
+</script>
+
+</html>
